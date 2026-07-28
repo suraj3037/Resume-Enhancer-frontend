@@ -1,4 +1,4 @@
-// Configuration: Switch this to your live backend URL once deployed (e.g., on Render, Railway, or Vercel Python)
+// Configuration: Pointing to your live Vercel backend
 const BACKEND_URL = "https://resume-enhancer-backend-nine.vercel.app/api/v1/enhance-resume-stream";
 
 const dropZone = document.getElementById('drop-zone');
@@ -76,6 +76,8 @@ analyzeBtn.addEventListener('click', async () => {
     outputContent.innerHTML = "";
     streamStatus.textContent = "Streaming live...";
     streamStatus.style.color = "var(--success)";
+    streamStatus.style.borderColor = "rgba(16, 185, 129, 0.2)";
+    streamStatus.style.background = "rgba(16, 185, 129, 0.1)";
 
     const formData = new FormData();
     formData.append("file", selectedFile);
@@ -104,29 +106,39 @@ analyzeBtn.addEventListener('click', async () => {
             const chunk = decoder.decode(value, { stream: true });
             rawText += chunk;
             
-            // Basic formatting to highlight Markdown bold headers visually
+            // Enhanced formatting to clean up LLM Markdown output
             outputContent.innerHTML = formatStreamedText(rawText);
             
             // Auto-scroll to the bottom of the card as content arrives
             resultsSection.scrollIntoView({ behavior: 'smooth', block: 'end' });
         }
 
-        streamStatus.textContent = "Enhance Complete";
+        streamStatus.textContent = "✨ Analysis Complete";
         streamStatus.style.color = "#38bdf8";
+        streamStatus.style.borderColor = "rgba(56, 189, 248, 0.2)";
+        streamStatus.style.background = "rgba(56, 189, 248, 0.1)";
 
     } catch (error) {
-        outputContent.innerHTML = `<span style="color: #ef4444;">Error generating feedback: ${error.message}</span>`;
+        outputContent.innerHTML = `<div style="color: #ef4444; background: rgba(239, 68, 68, 0.1); padding: 1rem; border-radius: 8px; border: 1px solid rgba(239, 68, 68, 0.2);"><strong>Error generating feedback:</strong> ${error.message}</div>`;
         streamStatus.textContent = "Failed";
         streamStatus.style.color = "#ef4444";
+        streamStatus.style.borderColor = "rgba(239, 68, 68, 0.2)";
+        streamStatus.style.background = "rgba(239, 68, 68, 0.1)";
     } finally {
         analyzeBtn.disabled = false;
         loader.style.display = "none";
     }
 });
 
-// Helper function to render basic markdown bold syntax (**text**) as HTML bold tags
+// Upgraded markdown parser for better visual structure
 function formatStreamedText(text) {
     return text
+        // Format bold (**text**)
         .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-        .replace(/^### (.*$)/gim, '<br><strong style="font-size:1.1em; color:#60a5fa;">$1</strong>');
+        // Format markdown H3 headers (### Header)
+        .replace(/^###\s+(.*$)/gim, '<h3>$1</h3>')
+        // Format markdown H2 headers (## Header)
+        .replace(/^##\s+(.*$)/gim, '<h3 style="font-size:1.3rem; color:#60a5fa;">$1</h3>')
+        // Format bullet points visually
+        .replace(/^\*\s+(.*$)/gim, '<div style="display:flex; gap:0.5rem; margin-left:0.5rem;"><span style="color:#60a5fa;">•</span><span>$1</span></div>');
 }

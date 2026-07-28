@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Resume Enhancer | Executive Feedback</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <div class="badge">Powered by Groq Llama 3.3</div>
+            <h1>Executive Resume Enhancer</h1>
+            <p>Upload your PDF resume to receive instant, real-time AI critique and recruiter-grade improvements.</p>
+        </header>
+
+        <main class="main-content">
+            <section class="card upload-card" id="drop-zone">
+                <input type="file" id="file-input" accept=".pdf" hidden>
+                <div class="upload-icon">📄</div>
+                <h3>Drag & Drop your PDF Resume here</h3>
+                <p class="sub-text">or click to browse your files (PDF only, max 10MB)</p>
+                <button class="btn btn-outline" onclick="document.getElementById('file-input').click()">Select File</button>
+                
+                <div class="file-display" id="file-display" style="display: none;">
+                    <span id="file-name">filename.pdf</span>
+                    <button class="btn-remove" id="remove-file">✕</button>
+                </div>
+            </section>
+
+            <div class="action-container">
+                <button class="btn btn-primary" id="analyze-btn" disabled>
+                    <span class="btn-text">Enhance Resume Now</span>
+                    <span class="loader" id="loader" style="display: none;"></span>
+                </button>
+            </div>
+
+            <section class="card results-card" id="results-section" style="display: none;">
+                <div class="results-header">
+                    <h2>AI Enhancement Critique</h2>
+                    <span class="status-indicator" id="stream-status">Streaming live...</span>
+                </div>
+                <div class="output-content" id="output-content"></div>
+            </section>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

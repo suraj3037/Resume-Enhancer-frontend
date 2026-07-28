@@ -1,5 +1,5 @@
 // Configuration: Switch this to your live backend URL once deployed (e.g., on Render, Railway, or Vercel Python)
-const BACKEND_URL = "https://resume-enhancer-livid-alpha.vercel.app/api/v1/enhance-resume-stream";
+const BACKEND_URL = "https://resume-enhancer-backend-nine.vercel.app/api/v1/enhance-resume-stream";
 
 const dropZone = document.getElementById('drop-zone');
 const fileInput = document.getElementById('file-input');
